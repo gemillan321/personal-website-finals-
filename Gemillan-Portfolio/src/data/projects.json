@@ -1,0 +1,4 @@
+[
+  { "id": 1, "title": "Secure Portfolio Website", "description": "A cybersecurity-themed portfolio built with Vue 3, Bootstrap 5 and Supabase." },
+  { "id": 2, "title": "Intrusion Detection Simulator", "description": "Simulates common attack patterns and demonstrates mitigation techniques." }
+]

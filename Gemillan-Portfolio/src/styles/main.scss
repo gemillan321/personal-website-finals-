@@ -1,0 +1,23 @@
+$body-bg: #0A0A0F;
+$body-color: #EAEAEA;
+$primary: #00F5FF;
+$secondary: #FF00E5;
+$border-radius: 0.2rem;
+
+@import "bootstrap/scss/bootstrap";
+
+body {
+  background-color: $body-bg;
+  font-family: 'Courier New', monospace;
+}
+
+.neon-btn {
+  background: transparent;
+  border: 1px solid $primary;
+  color: $primary;
+  transition: 0.2s ease;
+}
+
+.neon-btn:hover {
+  box-shadow: 0 0 10px $primary;
+}
