@@ -1,7 +1,0 @@
-[
-  { "id": 1, "name": "Vue 3" },
-  { "id": 2, "name": "Bootstrap 5" },
-  { "id": 3, "name": "Supabase/PostgreSQL" },
-  { "id": 4, "name": "Cybersecurity Principles" },
-  { "id": 5, "name": "XSS/CSRF Mitigation" }
-]
