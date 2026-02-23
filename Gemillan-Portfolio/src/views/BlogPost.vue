@@ -1,11 +1,14 @@
 <template>
-  <div class="container mt-5">
-    <div v-if="!post" class="text-muted">Loading...</div>
-    <div v-else>
-      <h2 class="text-primary">{{ post.title }}</h2>
-      <div v-html="content"></div>
-    </div>
-  </div>
+<div v-if="loading" class="text-muted">Loading...</div>
+
+<div v-else-if="notFound" class="text-danger">
+  Post not found.
+</div>
+
+<div v-else>
+  <h2 class="text-primary">{{ post.title }}</h2>
+  <div v-html="content"></div>
+</div>
 </template>
 
 <script setup>
@@ -18,11 +21,28 @@ import { marked } from 'marked'
 const route = useRoute()
 const post = ref(null)
 const content = ref('')
+const loading = ref(true)
+const notFound = ref(false)
 
 onMounted(async () => {
   const slug = route.params.slug
-  const { data } = await supabase.from('blog_posts').select().eq('slug', slug).single()
-  post.value = data
-  if (data) content.value = DOMPurify.sanitize(marked(data.content))
+  console.log("Slug from URL:", slug)
+
+  const { data, error } = await supabase
+    .from('blog_posts')
+    .select()
+    .eq('slug', slug)
+    .single()
+
+  console.log("Supabase response:", data, error)
+
+  if (!data || error) {
+    notFound.value = true
+  } else {
+    post.value = data
+    content.value = DOMPurify.sanitize(marked(data.content))
+  }
+
+  loading.value = false
 })
 </script>

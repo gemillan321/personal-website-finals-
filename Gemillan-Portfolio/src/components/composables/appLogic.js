@@ -1,5 +1,5 @@
 // useAppLogic.js
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 
 export function useAppLogic(matrixCanvas, cursorDot, cursorRing, cardRefs) {
   // ─── Refs ───────────────────────────────────────────────
@@ -14,6 +14,43 @@ export function useAppLogic(matrixCanvas, cursorDot, cursorRing, cardRefs) {
   const name = ref('')
   const email = ref('')
   const message = ref('')
+  const activePost = ref(null)
+  const modalVisible = ref(false)
+
+
+  const parsedContent = computed(() => {
+  if (!activePost.value) return []
+  return activePost.value.content
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .map(line => {
+      if (line.startsWith('•') || line.startsWith('-')) {
+        return { type: 'bullet', text: line }
+      }
+      if (line.startsWith('What I learned') || line.endsWith(':')) {
+        return { type: 'subheading', text: line }
+      }
+      return { type: 'paragraph', text: line }
+    })
+})
+
+function openPost(post) {
+  activePost.value = post
+  document.body.style.overflow = 'hidden'
+  nextTick(() => {
+    setTimeout(() => { modalVisible.value = true }, 10)
+  })
+}
+
+function closePost() {
+  modalVisible.value = false
+  setTimeout(() => {
+    activePost.value = null
+    document.body.style.overflow = ''
+  }, 400)
+}
+
 
   // ─── Data ────────────────────────────────────────────────
   const navLinks = [
@@ -90,7 +127,38 @@ export function useAppLogic(matrixCanvas, cursorDot, cursorRing, cardRefs) {
     
   }
   ])
-  const blogPosts = ref([ /* ...your blog posts array... */ ])
+  const blogPosts = ref([      {
+          id: 1,
+          slug: 'nested-files-forensics',
+          category: 'FORENSICS',
+          title: 'My First Real Forensics Challenge: The Nested Files Rabbit Hole',
+          date: 'Feb 2026',
+          excerpt: 'Tackling a complex challenge involving nested compressed files and extracting secrets.',
+          content: `
+        # The Nested Files Forensics Challenge
+
+        I recently faced my first real forensics challenge on CTF. The task was to analyze a set of **nested compressed files** and recover the hidden message.
+
+        ## Steps I Took
+
+        1. **Extracting Layers**  
+          I used tools like \`binwalk\`, \`lzip\`, \`lzop\`, and \`xz\` to peel each compression layer.
+
+        2. **Analyzing Contents**  
+          Each file contained another compressed file, which I had to carefully extract one by one.
+
+        3. **Decryption**  
+          The final file had ASCII-encoded content. Using **CyberChef**, I decoded the hidden message.
+
+        ## Lessons Learned
+
+        - Understanding different compression formats is crucial.  
+        - Always check the file type at each layer; some tools fail silently.  
+        - Patience pays off when facing deeply nested structures.
+
+        > This challenge taught me a lot about meticulous extraction and the importance of knowing your command-line tools.
+        `
+        } ])
 
   // ─── Typed Text Effect ────────────────────────────────────
   const roles = [
@@ -239,6 +307,9 @@ export function useAppLogic(matrixCanvas, cursorDot, cursorRing, cardRefs) {
       window.addEventListener('scroll', onScroll)
       onScroll()
       typeRole()
+      window.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') closePost()
+        })
       window.addEventListener('resize', () => {
         if (matrixCanvas.value) {
           matrixCanvas.value.width = window.innerWidth
@@ -259,6 +330,7 @@ export function useAppLogic(matrixCanvas, cursorDot, cursorRing, cardRefs) {
     typedText, focusedField, sending, feedback,
     name, email, message,
     navLinks, badges, terminalLines, stats, skillGroups, projects, blogPosts,
-    smoothScroll, tiltCard, resetCard, submitForm
+    activePost, modalVisible, parsedContent,
+    smoothScroll, tiltCard, resetCard, submitForm, openPost, closePost
   }
 }

@@ -1,3 +1,5 @@
+/* Styles.css */
+
 /* ─── Fonts & Root ─────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap');
 
@@ -26,6 +28,136 @@
   font-weight: 400;
   cursor: none;
   overflow-x: hidden;
+}
+
+/* ─── BLOG MODAL ─────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.25s ease;
+}
+
+.modal-panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  width: 100%;
+  max-width: 760px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 2.5rem;
+  position: relative;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  scrollbar-width: thin;
+  scrollbar-color: var(--green) transparent;
+}
+
+.modal-panel.open {
+  opacity: 1;
+  transform: none;
+}
+
+.modal-panel::-webkit-scrollbar { width: 4px; }
+.modal-panel::-webkit-scrollbar-thumb { background: var(--green); border-radius: 2px; }
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.2rem;
+}
+
+.modal-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.modal-date {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+}
+
+.modal-close {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  background: none;
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  cursor: none;
+  letter-spacing: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.modal-close:hover {
+  color: var(--green);
+  border-color: var(--green);
+}
+
+.modal-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+  letter-spacing: 0.5px;
+  margin-bottom: 1.5rem;
+}
+
+.modal-divider {
+  height: 1px;
+  background: linear-gradient(90deg, var(--green), transparent);
+  margin-bottom: 2rem;
+  opacity: 0.4;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.modal-para {
+  opacity: 0;
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+.modal-para.paragraph {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--text-dim);
+}
+
+.modal-para.subheading {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--green);
+  letter-spacing: 2px;
+  margin-top: 0.5rem;
+}
+
+.modal-para.bullet {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--text);
+  padding-left: 1rem;
+  border-left: 2px solid rgba(0, 255, 65, 0.3);
+  line-height: 1.7;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* ─── Scanlines ─────────────────────────────────────────── */

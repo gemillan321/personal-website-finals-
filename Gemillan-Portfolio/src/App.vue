@@ -1,4 +1,4 @@
-
+<!-- App.vue -->
 
 <template>
   <div id="app" ref="appRef">
@@ -166,10 +166,11 @@
       <h2 class="section-title">FIELD <span class="green">REPORTS</span></h2>
       <div class="blog-list">
         <a
-          v-for="(post, i) in blogPosts"
+           v-for="(post, i) in blogPosts"
           :key="post.id"
-          :href="`/blog/${post.slug}`"
+          href="#"
           class="blog-item"
+          @click.prevent="openPost(post)"
         >
           <div class="blog-num">{{ String(i + 1).padStart(2, '0') }}</div>
           <div class="blog-info">
@@ -259,6 +260,33 @@
       </div>
       <div class="footer-tag">Built with Vue 3 · Secured by Design</div>
     </footer>
+
+        <!-- Blog Post Modal -->
+    <Teleport to="body">
+      <div class="modal-overlay" v-if="activePost" @click.self="closePost">
+        <div class="modal-panel" :class="{ open: modalVisible }">
+          <div class="modal-header">
+            <div class="modal-meta">
+              <span class="blog-category">{{ activePost.category }}</span>
+              <span class="modal-date">{{ activePost.date }}</span>
+            </div>
+            <button class="modal-close" @click="closePost">[ X ]</button>
+          </div>
+          <h2 class="modal-title">{{ activePost.title }}</h2>
+          <div class="modal-divider"></div>
+          <div class="modal-body">
+            <p
+              v-for="(para, i) in parsedContent"
+              :key="i"
+              class="modal-para"
+              :class="para.type"
+              :style="{ animationDelay: `${i * 0.05}s` }"
+            >{{ para.text }}</p>
+          </div>
+        </div>
+      </div>
+    </Teleport>
+
   </div>
 </template>
 
@@ -277,7 +305,8 @@ const {
   typedText, focusedField, sending, feedback,
   name, email, message,
   navLinks, badges, terminalLines, stats, skillGroups, projects, blogPosts,
-  smoothScroll, tiltCard, resetCard, submitForm
+  activePost, modalVisible, parsedContent,
+  smoothScroll, tiltCard, resetCard, submitForm, openPost, closePost
 } = useAppLogic(matrixCanvas, cursorDot, cursorRing, cardRefs)
 </script>
 
