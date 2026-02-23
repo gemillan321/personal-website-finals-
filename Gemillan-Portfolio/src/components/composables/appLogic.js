@@ -58,7 +58,8 @@ function closePost() {
     { id: 'about', label: 'ABOUT', num: '01.' },
     { id: 'projects', label: 'PROJECTS', num: '02.' },
     { id: 'blog', label: 'BLOG', num: '03.' },
-    { id: 'contact', label: 'CONTACT', num: '04.' },
+    { id: 'guestbook', label: 'GUESTBOOK', num: '04.' }, // ← ADD
+    { id: 'contact', label: 'CONTACT', num: '05.' },
   ]
 
   const badges = [

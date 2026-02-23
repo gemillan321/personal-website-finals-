@@ -183,6 +183,87 @@
       </div>
     </section>
 
+    <!-- GUESTBOOK SECTION -->
+<section id="guestbook" class="guestbook reveal-section">
+  <div class="section-label">// 04. GUESTBOOK</div>
+  <h2 class="section-title">LEAVE A <span class="green">SIGNAL</span></h2>
+
+  <div class="guestbook-grid">
+    <!-- Submit Form -->
+    <div class="gb-form-panel">
+      <div class="panel-header">
+        <span class="green">$</span> transmit_message --public
+      </div>
+      <form @submit.prevent="submitEntry" class="gb-form">
+        <div class="form-field" :class="{ focused: gbFocused === 'name' }">
+          <label>IDENTIFIER</label>
+          <input
+            type="text"
+            v-model="gbName"
+            placeholder="your_name"
+            maxlength="50"
+            required
+            @focus="gbFocused = 'name'"
+            @blur="gbFocused = ''"
+          >
+        </div>
+        <div class="form-field" :class="{ focused: gbFocused === 'message' }">
+          <label>MESSAGE</label>
+          <textarea
+            v-model="gbMessage"
+            rows="4"
+            placeholder="// Leave a message..."
+            maxlength="300"
+            required
+            @focus="gbFocused = 'message'"
+            @blur="gbFocused = ''"
+          ></textarea>
+        </div>
+        <button type="submit" class="btn-primary" :disabled="gbSending">
+          <span v-if="!gbSending">TRANSMIT.exe</span>
+          <span v-else class="sending-anim">SENDING...</span>
+        </button>
+      </form>
+      <div v-if="gbFeedback" class="feedback-msg" :class="{ error: gbFeedbackError }">
+        <span :class="gbFeedbackError ? 'pink' : 'green'">
+          {{ gbFeedbackError ? '✗ ' : '✓ ' }}
+        </span>{{ gbFeedback }}
+      </div>
+    </div>
+
+    <!-- Entries Feed -->
+    <div class="gb-feed">
+      <div class="panel-header">
+        <span class="green">$</span> fetch entries --live
+        <span class="gb-count" v-if="!gbLoading">[{{ entries.length }} signals]</span>
+      </div>
+
+      <div v-if="gbLoading" class="gb-loading">
+        <span class="green">></span> Loading transmissions...
+      </div>
+
+      <div v-else-if="entries.length === 0" class="gb-empty">
+        <span class="term-info">// No entries yet. Be the first.</span>
+      </div>
+
+      <div v-else class="gb-entries">
+        <div
+          v-for="(entry, i) in entries"
+          :key="entry.id"
+          class="gb-entry"
+          :style="{ animationDelay: `${i * 0.06}s` }"
+        >
+          <div class="gb-entry-header">
+            <span class="gb-name">{{ entry.name }}</span>
+            <span class="gb-date">{{ formatDate(entry.created_at) }}</span>
+          </div>
+          <p class="gb-message">{{ entry.message }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
     <!-- CONTACT SECTION -->
     <section id="contact" class="contact reveal-section">
       <div class="section-label">// 04. CONTACT</div>
@@ -293,12 +374,18 @@
 <script setup>
 import { ref } from 'vue'
 import { useAppLogic } from './components/composables/appLogic'
-
+import { useGuestbook } from './components/composables/useGuestbook'
 const appRef = ref(null)
 const cursorDot = ref(null)
 const cursorRing = ref(null)
 const matrixCanvas = ref(null)
 const cardRefs = ref([])
+
+const {
+  entries, gbName, gbMessage, gbSending,
+  gbFeedback, gbFeedbackError, gbFocused,
+  gbLoading, submitEntry, formatDate
+} = useGuestbook()
 
 const {
   navScrolled, activeSection, menuOpen, skillsVisible,

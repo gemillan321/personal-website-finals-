@@ -30,6 +30,120 @@
   overflow-x: hidden;
 }
 
+/* ─── GUESTBOOK ──────────────────────────────────────────── */
+.guestbook {
+  padding: 6rem 2.5rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.guestbook-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.gb-form-panel {
+  background: rgba(12, 12, 24, 0.6);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  backdrop-filter: blur(8px);
+}
+
+.gb-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-top: 1.2rem;
+}
+
+.gb-feed {
+  background: rgba(12, 12, 24, 0.4);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  backdrop-filter: blur(8px);
+}
+
+.gb-count {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  margin-left: auto;
+}
+
+.gb-loading, .gb-empty {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.gb-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 1rem;
+  max-height: 480px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--green) transparent;
+}
+
+.gb-entries::-webkit-scrollbar { width: 3px; }
+.gb-entries::-webkit-scrollbar-thumb { background: var(--green); }
+
+.gb-entry {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  opacity: 0;
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+.gb-entry:last-child { border-bottom: none; }
+
+.gb-entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.gb-name {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--green);
+  letter-spacing: 1px;
+}
+
+.gb-date {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+.gb-message {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+
+/* Error state for feedback */
+.feedback-msg.error {
+  border-color: rgba(255, 0, 110, 0.4);
+  background: rgba(255, 0, 110, 0.03);
+}
+.pink { color: var(--pink); }
+
+/* Guestbook responsive */
+@media (max-width: 1024px) {
+  .guestbook-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .guestbook { padding: 4rem 1.5rem; }
+}
+
 /* ─── BLOG MODAL ─────────────────────────────────────────── */
 .modal-overlay {
   position: fixed;
