@@ -14,6 +14,6 @@
   </div>
 </template>
 
-<script setup>
+<!-- <script setup>
 import projects from '../data/projects.json'
-</script>
+</script> -->
