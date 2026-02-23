@@ -276,13 +276,13 @@
           </p>
           <div class="contact-links">
             <a href="mailto:alex@cipher.sec" class="contact-link">
-              <span class="link-icon">✉</span> alex@cipher.sec
+              <span class="link-icon">✉</span> miles.angelo77@gmail.com
             </a>
             <a href="https://github.com" class="contact-link" target="_blank">
-              <span class="link-icon">⌥</span> github.com/alexcipher
+              <span class="link-icon">⌥</span> https://github.com/gemillan321
             </a>
             <a href="https://linkedin.com" class="contact-link" target="_blank">
-              <span class="link-icon">⊞</span> linkedin.com/in/alexcipher
+              <span class="link-icon">⊞</span> www.linkedin.com/in/miles-angelo-gemillan-5a8597241
             </a>
           </div>
         </div>
