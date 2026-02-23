@@ -271,8 +271,7 @@
         <div class="contact-left">
           <h2 class="section-title">LET'S <span class="green">TALK</span></h2>
           <p class="contact-desc">
-            Whether it's a pentest engagement, a bug report, or just
-            geeking out over CVEs — my inbox is open.
+            Whether it’s discussing cybersecurity, sharing ideas about systems, or geeking out over tech and CTFs — my inbox is open.
           </p>
           <div class="contact-links">
             <a href="mailto:alex@cipher.sec" class="contact-link">
@@ -337,7 +336,7 @@
     <footer class="footer">
       <div class="footer-line"></div>
       <div class="footer-content">
-        <span class="green">root@cyberlab</span>:<span style="color:#4fc3f7">~</span># <span class="footer-text">© 2026 Alex Cipher — All Rights Reserved</span>
+        <span class="green">root@cyberlab</span>:<span style="color:#4fc3f7">~</span># <span class="footer-text">© 2026 Miles Gemillan</span>
       </div>
       <div class="footer-tag">Built with Vue 3 · Secured by Design</div>
     </footer>
