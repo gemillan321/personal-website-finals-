@@ -2,6 +2,20 @@
 
 <template>
   <div id="app" ref="appRef">
+    
+    <!-- SYSTEM BOOTUP SCREEN -->
+    <div v-if="showBoot" class="boot-screen" :class="{ 'fade-out': bootFading }">
+      <div class="boot-container">
+        <div class="boot-logo glitch" data-text="OS.PORTFOLIO">OS.PORTFOLIO</div>
+        <div class="boot-logs">
+          <p v-for="(log, idx) in visibleLogs" :key="idx">{{ log }}</p>
+        </div>
+        <button v-if="bootReady" class="btn-primary boot-btn" @click="enterSystem">
+          [ ENTER_SYSTEM ]
+        </button>
+      </div>
+    </div>
+
     <!-- Custom Cursor -->
     <div class="cursor-dot" ref="cursorDot"></div>
     <div class="cursor-ring" ref="cursorRing"></div>
@@ -50,7 +64,7 @@
         </div>
           <p class="hero-desc">
             Cybersecurity enthusiast. CTF competitor. Cloud and web developer.<br>
-            <span class="green">I explore systems, solve challenges, and build secure projects.</span>
+            <span class="primary-text">I explore systems, solve challenges, and build secure projects.</span>
           </p>
         <div class="hero-badges">
           <span class="badge" v-for="b in badges" :key="b">{{ b }}</span>
@@ -72,7 +86,7 @@
         <div class="term-header">
           <span class="dot red"></span>
           <span class="dot yellow"></span>
-          <span class="dot green-dot"></span>
+          <span class="dot primary-dot"></span>
           <span class="term-title">threat_analysis.sh</span>
         </div>
         <div class="term-body">
@@ -88,16 +102,16 @@
       <div class="section-label">// 01. ABOUT</div>
       <div class="about-grid">
         <div class="about-left">
-          <h2 class="section-title">WHO<br><span class="green">AM I?</span></h2>
+          <h2 class="section-title">WHO<br><span class="primary-text">AM I?</span></h2>
             <div class="about-bio">
               <p>
-                2nd-year <span class="highlight">Computer Science student</span> building real-world projects in web development and embedded systems. I tinker with <span class="highlight">Arduino</span>, create security tools, and love turning ideas into code.
+                2nd-year <span class="highlight-text">Computer Science student</span> building real-world projects in web development and embedded systems. I tinker with <span class="highlight-text">Arduino</span>, create security tools, and love turning ideas into code.
               </p>
               <p>
-                Passionate about learning, experimenting, and sharing knowledge — whether it’s through <span class="highlight">GitHub repos</span>, CTF writeups, or automation scripts.
+                Passionate about learning, experimenting, and sharing knowledge — whether it’s through <span class="highlight-text">GitHub repos</span>, CTF writeups, or automation scripts.
               </p>
               <p>
-                My philosophy: <span class="green">code smart, stay curious, and always keep building.</span>
+                My philosophy: <span class="primary-text">code smart, stay curious, and always keep building.</span>
               </p>
             </div>
           <div class="stat-grid">
@@ -110,7 +124,7 @@
         <div class="about-right">
           <div class="skills-panel">
             <div class="panel-header">
-              <span class="green">$</span> cat skills.txt
+              <span class="primary-text">$</span> cat skills.txt
             </div>
             <div class="skill-group" v-for="group in skillGroups" :key="group.name">
               <div class="skill-group-name">{{ group.name }}</div>
@@ -129,7 +143,7 @@
     <!-- PROJECTS SECTION -->
     <section id="projects" class="projects reveal-section">
       <div class="section-label">// 02. PROJECTS</div>
-      <h2 class="section-title">RECENT <span class="green">OPS</span></h2>
+      <h2 class="section-title">RECENT <span class="primary-text">OPS</span></h2>
       <div class="projects-grid">
         <div
           class="project-card"
@@ -163,7 +177,7 @@
     <!-- BLOG SECTION -->
     <section id="blog" class="blog reveal-section">
       <div class="section-label">// 03. INTEL</div>
-      <h2 class="section-title">FIELD <span class="green">REPORTS</span></h2>
+      <h2 class="section-title">FIELD <span class="primary-text">REPORTS</span></h2>
       <div class="blog-list">
         <a
            v-for="(post, i) in blogPosts"
@@ -184,92 +198,90 @@
     </section>
 
     <!-- GUESTBOOK SECTION -->
-<section id="guestbook" class="guestbook reveal-section">
-  <div class="section-label">// 04. GUESTBOOK</div>
-  <h2 class="section-title">LEAVE A <span class="green">SIGNAL</span></h2>
+    <section id="guestbook" class="guestbook reveal-section">
+      <div class="section-label">// 04. GUESTBOOK</div>
+      <h2 class="section-title">LEAVE A <span class="primary-text">SIGNAL</span></h2>
 
-  <div class="guestbook-grid">
-    <!-- Submit Form -->
-    <div class="gb-form-panel">
-      <div class="panel-header">
-        <span class="green">$</span> transmit_message --public
-      </div>
-      <form @submit.prevent="submitEntry" class="gb-form">
-        <div class="form-field" :class="{ focused: gbFocused === 'name' }">
-          <label>IDENTIFIER</label>
-          <input
-            type="text"
-            v-model="gbName"
-            placeholder="your_name"
-            maxlength="50"
-            required
-            @focus="gbFocused = 'name'"
-            @blur="gbFocused = ''"
-          >
-        </div>
-        <div class="form-field" :class="{ focused: gbFocused === 'message' }">
-          <label>MESSAGE</label>
-          <textarea
-            v-model="gbMessage"
-            rows="4"
-            placeholder="// Leave a message..."
-            maxlength="300"
-            required
-            @focus="gbFocused = 'message'"
-            @blur="gbFocused = ''"
-          ></textarea>
-        </div>
-        <button type="submit" class="btn-primary" :disabled="gbSending">
-          <span v-if="!gbSending">TRANSMIT.exe</span>
-          <span v-else class="sending-anim">SENDING...</span>
-        </button>
-      </form>
-      <div v-if="gbFeedback" class="feedback-msg" :class="{ error: gbFeedbackError }">
-        <span :class="gbFeedbackError ? 'pink' : 'green'">
-          {{ gbFeedbackError ? '✗ ' : '✓ ' }}
-        </span>{{ gbFeedback }}
-      </div>
-    </div>
-
-    <!-- Entries Feed -->
-    <div class="gb-feed">
-      <div class="panel-header">
-        <span class="green">$</span> fetch entries --live
-        <span class="gb-count" v-if="!gbLoading">[{{ entries.length }} signals]</span>
-      </div>
-
-      <div v-if="gbLoading" class="gb-loading">
-        <span class="green">></span> Loading transmissions...
-      </div>
-
-      <div v-else-if="entries.length === 0" class="gb-empty">
-        <span class="term-info">// No entries yet. Be the first.</span>
-      </div>
-
-      <div v-else class="gb-entries">
-        <div
-          v-for="(entry, i) in entries"
-          :key="entry.id"
-          class="gb-entry"
-          :style="{ animationDelay: `${i * 0.06}s` }"
-        >
-          <div class="gb-entry-header">
-            <span class="gb-name">{{ entry.name }}</span>
-            <span class="gb-date">{{ formatDate(entry.created_at) }}</span>
+      <div class="guestbook-grid">
+        <div class="gb-form-panel">
+          <div class="panel-header">
+            <span class="primary-text">$</span> transmit_message --public
           </div>
-          <p class="gb-message">{{ entry.message }}</p>
+          <form @submit.prevent="submitEntry" class="gb-form">
+            <div class="form-field" :class="{ focused: gbFocused === 'name' }">
+              <label>IDENTIFIER</label>
+              <input
+                type="text"
+                v-model="gbName"
+                placeholder="your_name"
+                maxlength="50"
+                required
+                @focus="gbFocused = 'name'"
+                @blur="gbFocused = ''"
+              >
+            </div>
+            <div class="form-field" :class="{ focused: gbFocused === 'message' }">
+              <label>MESSAGE</label>
+              <textarea
+                v-model="gbMessage"
+                rows="4"
+                placeholder="// Leave a message..."
+                maxlength="300"
+                required
+                @focus="gbFocused = 'message'"
+                @blur="gbFocused = ''"
+              ></textarea>
+            </div>
+            <button type="submit" class="btn-primary" :disabled="gbSending">
+              <span v-if="!gbSending">TRANSMIT.exe</span>
+              <span v-else class="sending-anim">SENDING...</span>
+            </button>
+          </form>
+          <div v-if="gbFeedback" class="feedback-msg" :class="{ error: gbFeedbackError }">
+            <span :class="gbFeedbackError ? 'pink' : 'primary-text'">
+              {{ gbFeedbackError ? '✗ ' : '✓ ' }}
+            </span>{{ gbFeedback }}
+          </div>
+        </div>
+
+        <div class="gb-feed">
+          <div class="panel-header">
+            <span class="primary-text">$</span> fetch entries --live
+            <span class="gb-count" v-if="!gbLoading">[{{ entries.length }} signals]</span>
+          </div>
+
+          <div v-if="gbLoading" class="gb-loading">
+            <span class="primary-text">></span> Loading transmissions...
+          </div>
+
+          <div v-else-if="entries.length === 0" class="gb-empty">
+            <span class="term-info">// No entries yet. Be the first.</span>
+          </div>
+
+          <div v-else class="gb-entries">
+            <div
+              v-for="(entry, i) in entries"
+              :key="entry.id"
+              class="gb-entry"
+              :style="{ animationDelay: `${i * 0.06}s` }"
+            >
+              <div class="gb-entry-header">
+                <span class="gb-name">{{ entry.name }}</span>
+                <span class="gb-date">{{ formatDate(entry.created_at) }}</span>
+              </div>
+              <p class="gb-message">{{ entry.message }}</p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
     <!-- CONTACT SECTION -->
     <section id="contact" class="contact reveal-section">
-      <div class="section-label">// 04. CONTACT</div>
+      <div class="section-label">// 05. CONTACT</div>
       <div class="contact-grid">
         <div class="contact-left">
-          <h2 class="section-title">LET'S <span class="green">TALK</span></h2>
+          <h2 class="section-title">LET'S <span class="primary-text">TALK</span></h2>
           <p class="contact-desc">
             Whether it’s discussing cybersecurity, sharing ideas about systems, or geeking out over tech and CTFs — my inbox is open.
           </p>
@@ -281,7 +293,7 @@
               <span class="link-icon">⌥</span> https://github.com/gemillan321
             </a>
             <a href="https://linkedin.com" class="contact-link" target="_blank">
-              <span class="link-icon">⊞</span> www.linkedin.com/in/miles-angelo-gemillan-5a8597241
+              <span class="link-icon">⊞</span> www.linkedin.com/in/miles-angelo-gemillan
             </a>
           </div>
         </div>
@@ -326,7 +338,7 @@
             </button>
           </form>
           <div class="feedback-msg" v-if="feedback">
-            <span class="green">✓ </span>{{ feedback }}
+            <span class="primary-text">✓ </span>{{ feedback }}
           </div>
         </div>
       </div>
@@ -336,12 +348,12 @@
     <footer class="footer">
       <div class="footer-line"></div>
       <div class="footer-content">
-        <span class="green">root@cyberlab</span>:<span style="color:#4fc3f7">~</span># <span class="footer-text">© 2026 Miles Gemillan</span>
+        <span class="primary-text">root@cyberlab</span>:<span style="color:#4cc9f0">~</span># <span class="footer-text">© 2026 Miles Gemillan</span>
       </div>
       <div class="footer-tag">Built with Vue 3 · Secured by Design</div>
     </footer>
 
-        <!-- Blog Post Modal -->
+    <!-- Blog Post Modal -->
     <Teleport to="body">
       <div class="modal-overlay" v-if="activePost" @click.self="closePost">
         <div class="modal-panel" :class="{ open: modalVisible }">
@@ -371,9 +383,42 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useAppLogic } from './components/composables/appLogic'
 import { useGuestbook } from './components/composables/useGuestbook'
+
+// Boot Screen Logic
+const showBoot = ref(true)
+const bootFading = ref(false)
+const bootReady = ref(false)
+const visibleLogs = ref([])
+const bootLogsList = [
+  'Initializing core kernel modules...',
+  'Establishing secure connection...',
+  'Bypassing mainframe security protocols...',
+  'Loading neon aesthetics...',
+  'System Ready. Welcome back, User.'
+]
+
+function enterSystem() {
+  bootFading.value = true
+  setTimeout(() => {
+    showBoot.value = false
+  }, 800)
+}
+
+onMounted(() => {
+  // Simulate Boot Up Logs
+  bootLogsList.forEach((log, index) => {
+    setTimeout(() => {
+      visibleLogs.value.push(log)
+      if (index === bootLogsList.length - 1) {
+        setTimeout(() => bootReady.value = true, 500)
+      }
+    }, index * 400 + 300)
+  })
+})
+
 const appRef = ref(null)
 const cursorDot = ref(null)
 const cursorRing = ref(null)
@@ -395,4 +440,3 @@ const {
   smoothScroll, tiltCard, resetCard, submitForm, openPost, closePost
 } = useAppLogic(matrixCanvas, cursorDot, cursorRing, cardRefs)
 </script>
-

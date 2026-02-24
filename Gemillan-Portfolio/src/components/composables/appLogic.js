@@ -58,7 +58,7 @@ function closePost() {
     { id: 'about', label: 'ABOUT', num: '01.' },
     { id: 'projects', label: 'PROJECTS', num: '02.' },
     { id: 'blog', label: 'BLOG', num: '03.' },
-    { id: 'guestbook', label: 'GUESTBOOK', num: '04.' }, // ← ADD
+    { id: 'guestbook', label: 'GUESTBOOK', num: '04.' }, 
     { id: 'contact', label: 'CONTACT', num: '05.' },
   ]
 
@@ -212,7 +212,8 @@ function closePost() {
       drops.forEach((y, i) => {
         const char = chars[Math.floor(Math.random() * chars.length)]
         const x = i * 20
-        ctx.fillStyle = i % 5 === 0 ? '#ffffff' : '#00ff41'
+        // CHANGED COLOR HERE TO NEON PINK
+        ctx.fillStyle = i % 5 === 0 ? '#ffffff' : '#f72585' 
         ctx.globalAlpha = i % 3 === 0 ? 0.9 : 0.4
         ctx.fillText(char, x, y * 20)
         ctx.globalAlpha = 1
