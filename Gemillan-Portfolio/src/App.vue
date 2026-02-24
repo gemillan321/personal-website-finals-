@@ -63,7 +63,7 @@
           <span class="cursor-blink">█</span>
         </div>
           <p class="hero-desc">
-            Cybersecurity enthusiast. CTF competitor. Cloud and web developer.<br>
+            Cybersecurity Enthusiast. CTF Competitor. Cloud and Web Developer.<br>
             <span class="primary-text">I explore systems, solve challenges, and build secure projects.</span>
           </p>
         <div class="hero-badges">
