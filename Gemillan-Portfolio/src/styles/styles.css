@@ -304,7 +304,7 @@
   position: fixed;
   top: 0; left: 0;
   pointer-events: none;
-  z-index: 99999;
+  z-index: 999999; /* <--- Add one extra 9 here! */
   will-change: transform;
   transform: translate(-50%, -50%);
 }
@@ -1076,4 +1076,69 @@ section { position: relative; z-index: 1; }
   .cursor-dot, .cursor-ring { display: none; }
   #app { cursor: auto; }
   a, button, input, textarea { cursor: auto !important; }
+}
+
+/* ─── BOOT SCREEN ──────────────────────────────────── */
+.boot-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s ease, filter 0.8s ease;
+}
+
+.boot-screen.fade-out {
+  opacity: 0;
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+.boot-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+.boot-logo {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 4rem);
+  color: #fff;
+  font-weight: 900;
+  letter-spacing: 5px;
+  text-shadow: 0 0 15px var(--green);
+  margin-bottom: 1rem;
+}
+
+.boot-logs {
+  font-family: var(--font-mono);
+  color: var(--cyan);
+  font-size: 0.95rem;
+  width: 100%;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.boot-logs p {
+  opacity: 0;
+  animation: termReveal 0.2s ease forwards;
+}
+
+.boot-logs p::before {
+  content: '>';
+  color: var(--green);
+  margin-right: 8px;
+}
+
+.boot-btn {
+  margin-top: 1rem;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
 }

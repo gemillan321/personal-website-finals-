@@ -2,6 +2,20 @@
 
 <template>
   <div id="app" ref="appRef">
+
+    <!-- SYSTEM BOOTUP SCREEN (ADD THIS) -->
+    <div v-if="showBoot" class="boot-screen" :class="{ 'fade-out': bootFading }">
+      <div class="boot-container">
+        <div class="boot-logo glitch" data-text="OS.PORTFOLIO">OS.PORTFOLIO</div>
+        <div class="boot-logs">
+          <p v-for="(log, idx) in visibleLogs" :key="idx">{{ log }}</p>
+        </div>
+        <button v-if="bootReady" class="btn-primary boot-btn" @click="enterSystem">
+          [ ENTER_SYSTEM ]
+        </button>
+      </div>
+    </div>
+
     <!-- Custom Cursor -->
     <div class="cursor-dot" ref="cursorDot"></div>
     <div class="cursor-ring" ref="cursorRing"></div>
@@ -371,14 +385,50 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useAppLogic } from './components/composables/appLogic'
 import { useGuestbook } from './components/composables/useGuestbook'
+
+// --- START OF BOOT SCREEN LOGIC ---
+const showBoot = ref(true)
+const bootFading = ref(false)
+const bootReady = ref(false)
+const visibleLogs = ref([])
+const bootLogsList = [
+  'Initializing core kernel modules...',
+  'Establishing secure connection...',
+  'Bypassing mainframe security protocols...',
+  'Loading matrix aesthetics...',
+  'System Ready. Welcome back, User.'
+]
+
+function enterSystem() {
+  bootFading.value = true
+  setTimeout(() => {
+    showBoot.value = false
+  }, 800)
+}
+
+onMounted(() => {
+  bootLogsList.forEach((log, index) => {
+    setTimeout(() => {
+      visibleLogs.value.push(log)
+      if (index === bootLogsList.length - 1) {
+        setTimeout(() => bootReady.value = true, 500)
+      }
+    }, index * 400 + 300)
+  })
+})
+
 const appRef = ref(null)
 const cursorDot = ref(null)
 const cursorRing = ref(null)
 const matrixCanvas = ref(null)
 const cardRefs = ref([])
+
+
+
+
 
 const {
   entries, gbName, gbMessage, gbSending,
